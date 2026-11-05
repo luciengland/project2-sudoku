@@ -28,6 +28,14 @@ class SudokuApp(clingo.application.Application):
         control.ground([("base", [])])
         # solve sudoku
         control.solve()
+    # sort the output
+    def print_model(self, model, printer):
+        # get all atoms
+        atoms = model.symbols(shown=True)
+        # sort by row and columns
+        sorted_atoms = sorted(atoms, key=lambda atom: (atom.arguments[0].number, atom.arguments[1].number))
+        # print separated by spaces
+        print(" ".join(str(atom) for atom in sorted_atoms))
 
 if __name__ == "__main__":
     clingo.application.clingo_main(SudokuApp())
